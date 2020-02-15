@@ -1,1 +1,26 @@
--
+#!groovy
+// Run docker build
+properties([disableConcurrentBuilds()])
+
+pipline {
+	agent {
+		label 'master'
+		}
+
+	options {
+		buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+		timestamps()
+	}
+
+	stages {
+		stage("create docker image") {
+			
+				steps {
+					echo "--start build image ---"
+					dir ('docker_template') {
+							sh 'docker build .'
+					}
+				}
+			}
+		}
+	}	
